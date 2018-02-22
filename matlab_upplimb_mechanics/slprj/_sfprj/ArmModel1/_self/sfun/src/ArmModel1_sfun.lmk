@@ -1,0 +1,26 @@
+CC     = "C:\Program Files\MATLAB\R2017a\sys\lcc64\lcc64\bin\lcc64.exe"
+LD     = "C:\Program Files\MATLAB\R2017a\sys\lcc64\lcc64\bin\lcclnk64.exe"
+LIBCMD = "C:\Program Files\MATLAB\R2017a\sys\lcc64\lcc64\bin\lcclib64.exe"
+CFLAGS = -dll -noregistrylookup  -c -Zp8 -DLCC_WIN64 -DMATLAB_MEX_FILE -DMX_COMPAT_32 -nodeclspec 
+LDFLAGS = -s -dll -L"C:\Program Files\MATLAB\R2017a\sys\lcc64\lcc64\lib64" -entry LibMain -map sfun.map 
+LIBFLAGS = 
+
+OBJECTS = \
+	"ArmModel1_sfun.obj"\
+	"c2_ArmModel1.obj"\
+	"ArmModel1_sfun_registry.obj"\
+	"lccstub.obj"\
+
+INCLUDE_PATH= -I"C:\Program Files\MATLAB\R2017a\sys\lcc64\lcc64\include64"  -I"C:\Program Files\MATLAB\R2017a\extern\include"  -I"C:\Program Files\MATLAB\R2017a\simulink\include"  -I"C:\Program Files\MATLAB\R2017a\simulink\include\sf_runtime"  -I"C:\Program Files\MATLAB\R2017a\stateflow\c\mex\include"  -I"C:\Program Files\MATLAB\R2017a\rtw\c\src"  -I"C:\Users\erich\Documents\Matlab2017a\BioMech_uppLimb\slprj\_sfprj\ArmModel1\_self\sfun\src" 
+ 
+
+ArmModel1_sfun.mexw64 : $(MAKEFILE) $(OBJECTS)
+	$(LD) $(LDFLAGS) -o ArmModel1_sfun.mexw64 @ArmModel1_sfun.lmko
+ArmModel1_sfun.obj :	"ArmModel1_sfun.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "ArmModel1_sfun.c"
+c2_ArmModel1.obj :	"c2_ArmModel1.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "c2_ArmModel1.c"
+ArmModel1_sfun_registry.obj :	"ArmModel1_sfun_registry.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "ArmModel1_sfun_registry.c"
+lccstub.obj :	"C:\Program Files\MATLAB\R2017a\sys\lcc64\lcc64\mex\lccstub.c"
+	$(CC) $(CFLAGS) $(INCLUDE_PATH) "C:\Program Files\MATLAB\R2017a\sys\lcc64\lcc64\mex\lccstub.c"

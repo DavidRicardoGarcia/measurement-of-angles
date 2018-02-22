@@ -1,0 +1,188 @@
+#VRML V2.0 utf8
+
+#Created with V-Realm Builder v2.0
+#Integrated Data Systems Inc.
+#www.ids-net.com
+
+
+Viewpoint {
+	position	0.3 3.9 13.6
+}
+Background {
+	groundAngle	[ 0.9, 1.5, 1.57 ]
+	groundColor	[ 0 0.8 0,
+			  0.174249 0.82 0.187362,
+			  0.467223 0.82 0.445801,
+			  0.621997 0.67 0.600279 ]
+	skyAngle	[ 0.1, 1.2, 1.57 ]
+	skyColor	[ 0.76238 0.8 0.1427,
+			  0.277798 0.219779 0.7,
+			  0.222549 0.390234 0.7,
+			  0.60094 0.662637 0.69 ]
+}
+DEF Base Transform {
+	children [ 
+	    Shape {
+		    appearance	Appearance {
+			    material	Material {
+				    ambientIntensity	0.1
+				    diffuseColor	0.0156466 0.76881 0.8
+				    emissiveColor	0 0 0
+				    shininess	0.2
+				    specularColor	1 1 1
+				    transparency	0
+			    }
+
+		    }
+
+		    geometry	Cylinder {
+			    height	0.1
+			    radius	2
+		    }
+
+	    }
+
+	    DEF H Transform {
+		    children [ 
+			Shape {
+				appearance	Appearance {
+					material	Material {
+						ambientIntensity	0.1
+						diffuseColor	0.9 0.55237 0.00733938
+						emissiveColor	0 0 0
+						shininess	0.2
+						specularColor	1 1 1
+						transparency	0
+					}
+
+				}
+
+				geometry	Sphere {
+					radius	0.5
+				}
+
+			}
+
+			DEF humero Transform {
+				translation	0 1.7 0
+				children [ 
+				    Shape {
+					    appearance	Appearance {
+						    material	Material {
+							    ambientIntensity	0.1
+							    diffuseColor	0.00200167 0.0121456 0.8
+							    emissiveColor	0 0 0
+							    shininess	0.2
+							    specularColor	1 1 1
+							    transparency	0
+						    }
+
+					    }
+
+					    geometry	Cylinder {
+						    height	3
+						    radius	0.35
+					    }
+
+				    }
+
+				    DEF C Transform {
+					    translation	0 1.5 0
+					    children [ 
+						Shape {
+							appearance	Appearance {
+								material	Material {
+									ambientIntensity	0.1
+									diffuseColor	0.9 0.55237 0.00733938
+									emissiveColor	0 0 0
+									shininess	0.2
+									specularColor	1 1 1
+									transparency	0
+								}
+
+							}
+
+							geometry	Sphere {
+								radius	0.5
+							}
+
+						}
+
+						DEF Codo Transform {
+							translation	0 1.7 0
+							children [ 
+							    Shape {
+								    appearance	Appearance {
+									    material	Material {
+										    ambientIntensity	0.1
+										    diffuseColor	0.0172112 0.84569 0.88
+										    emissiveColor	0 0 0
+										    shininess	0.2
+										    specularColor	0 0 0
+										    transparency	0
+									    }
+
+								    }
+
+								    geometry	Cylinder {
+									    height	3
+									    radius	0.35
+								    }
+
+							    }
+
+							    DEF M Transform {
+								    translation	0 1.6 0
+								    children [ 
+									Shape {
+										appearance	Appearance {
+											material	Material {
+												ambientIntensity	0.1
+												diffuseColor	0.9 0.55237 0.00733938
+												emissiveColor	0 0 0
+												shininess	0.2
+												specularColor	1 1 1
+												transparency	0
+											}
+
+										}
+
+										geometry	Sphere {
+											radius	0.5
+										}
+
+									}
+
+									DEF Mano Transform {
+										translation	0 1.2 0
+										children Shape {
+											appearance	Appearance {
+												material	Material {
+													ambientIntensity	0.1
+													diffuseColor	0.8 0.0120863 0.747218
+													emissiveColor	0 0 0
+													shininess	0.2
+													specularColor	1 1 1
+													transparency	0
+												}
+
+											}
+
+											geometry	Box {
+												size	1.4 2 0.5
+											}
+
+										}
+									}
+								    ]
+							    }
+							]
+						}
+					    ]
+				    }
+				]
+			}
+		    ]
+	    }
+	]
+}

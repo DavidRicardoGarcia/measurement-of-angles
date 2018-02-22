@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Robot xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Name>KukaKR5Coll2</Name>
+  <Scale>1</Scale>
+   <Manufacturer>Kuka</Manufacturer>
+  <ModelName>KR 5 Arc</ModelName>
+  <Payload>5</Payload>
+  <TotalWeight>127</TotalWeight>
+  <Links>
+    <Link>
+      <FileName>link0.stl</FileName>
+      <Color>LightSlateGray</Color>
+    </Link>
+    <Link>
+      <FileName>link1.stl</FileName>
+      <Color>Orange</Color>
+    </Link>
+    <Link>
+      <FileName>link2.stl</FileName>
+      <Color>Tomato</Color>
+    </Link>
+    <Link>
+      <FileName>link3.stl</FileName>
+      <Color>Green</Color>
+    </Link>
+	
+  </Links>
+  <Joints>
+    <RevoluteJoint>
+      <JointOffset>400</JointOffset>
+      <JointAngle>0</JointAngle>
+      <LinkLength>180</LinkLength>
+      <TwistAngle>90</TwistAngle>
+      <JointAngleMin>-155</JointAngleMin>
+      <JointAngleMax>155</JointAngleMax>
+    </RevoluteJoint>
+    <RevoluteJoint>
+      <JointOffset>0</JointOffset>
+      <JointAngle>90</JointAngle>
+      <LinkLength>600</LinkLength>
+      <TwistAngle>0</TwistAngle>
+      <JointAngleMin>-65</JointAngleMin>
+      <JointAngleMax>180</JointAngleMax>
+    </RevoluteJoint>
+    <RevoluteJoint>
+      <JointOffset>0</JointOffset>
+      <JointAngle>0</JointAngle>
+      <LinkLength>120</LinkLength>
+      <TwistAngle>0</TwistAngle>
+      <JointAngleMin>-68</JointAngleMin>
+      <JointAngleMax>105</JointAngleMax>
+    </RevoluteJoint>
+   
+  </Joints>
+</Robot>

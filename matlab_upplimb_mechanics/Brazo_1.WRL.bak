@@ -4,7 +4,7 @@
 # www.ids-net.com
 
 Viewpoint {
-  position 0 -3 16
+  position 0.3 3.9 13.6
 }
 Background {
   skyColor [

@@ -1,0 +1,177 @@
+#VRML V2.0 utf8
+
+#Created with V-Realm Builder v2.0
+#Integrated Data Systems Inc.
+#www.ids-net.com
+
+
+DEF G_HombroCodo Transform {
+	translation	0 0 0
+	scale	1.04697 1.04697 1.04697
+	center	-70 0 0
+	children [ 
+	    Shape {
+		    appearance	Appearance {
+			    material	Material {
+			    }
+
+		    }
+
+		    geometry	Box {
+			    size	2 0.1 2
+		    }
+
+	    }
+
+	    DEF Sphere_HombroCodo Transform {
+		    children [ 
+			Shape {
+				appearance	Appearance {
+					material	Material {
+						ambientIntensity	0.1
+						diffuseColor	0.8 0.0643941 0.0488021
+					}
+
+				}
+
+				geometry	Sphere {
+					radius	0.35
+				}
+
+			}
+
+			DEF Cylinder_HC Transform {
+				translation	0 1 0
+				children Shape {
+					appearance	Appearance {
+						material	Material {
+							ambientIntensity	0.1
+							diffuseColor	0.0172112 0.84569 0.88
+						}
+
+					}
+
+					geometry	Cylinder {
+						height	2.5
+						radius	0.2
+					}
+
+				}
+			}
+		    ]
+	    }
+	]
+}
+DEF G_CodoMano Transform {
+	translation	0 0 0
+	scale	1.04697 1.04697 1.04697
+	children [ 
+	    Shape {
+		    appearance	Appearance {
+			    material	Material {
+			    }
+
+		    }
+
+		    geometry	Box {
+			    size	2 0.1 2
+		    }
+
+	    }
+
+	    DEF Sphere_CodoMano Transform {
+		    children [ 
+			Shape {
+				appearance	Appearance {
+					material	Material {
+						ambientIntensity	0.1
+						diffuseColor	0.9 0.55237 0.00733938
+						specularColor	1 1 1
+					}
+
+				}
+
+				geometry	Sphere {
+					radius	0.35
+				}
+
+			}
+
+			DEF Cylinder_CM Transform {
+				translation	0 1 0
+				children Shape {
+					appearance	Appearance {
+						material	Material {
+							ambientIntensity	0.1
+							diffuseColor	0.0065239 0.8 0.0942574
+						}
+
+					}
+
+					geometry	Cylinder {
+						height	2.5
+						radius	0.2
+					}
+
+				}
+			}
+		    ]
+	    }
+	]
+}
+DEF G_Mano Transform {
+	translation	0 0 0
+	scale	1.04697 1.04697 1.04697
+	center	70 0 0
+	children [ 
+	    Shape {
+		    appearance	Appearance {
+			    material	Material {
+			    }
+
+		    }
+
+		    geometry	Box {
+			    size	2 0.1 2
+		    }
+
+	    }
+
+	    DEF Sphere_Mano Transform {
+		    children [ 
+			Shape {
+				appearance	Appearance {
+					material	Material {
+						ambientIntensity	0.2
+						diffuseColor	0.8 0.433107 0.56063
+					}
+
+				}
+
+				geometry	Sphere {
+					radius	0.35
+				}
+
+			}
+
+			DEF Mano Transform {
+				translation	0 0.75 0
+				children Shape {
+					appearance	Appearance {
+						material	Material {
+							ambientIntensity	0.2
+							diffuseColor	0.8 0.710889 0.266944
+						}
+
+					}
+
+					geometry	Box {
+						size	0.8 1 0.25
+					}
+
+				}
+			}
+		    ]
+	    }
+	]
+}

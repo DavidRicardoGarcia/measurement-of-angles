@@ -3,7 +3,7 @@ clear all;
 clc;
 
 
-theta=-180:1:180;
+theta=-180:0.01:180;
 result=zeros(1,4);
 result1=zeros(1,4);
 result2=zeros(1,4);
@@ -19,13 +19,13 @@ y1(3,i)=cosd(y1(1,i));
 end
 
 
-xi1=0;%rot en z psi 90, -90
+xi1=10;%rot en z psi 90, -90
 xi2=0;%rot en x phi 180, 0
 xi3=0;%rot en y theta 180, -90 
 
 
 xi1a=0;%rot en z psi 180,-10
-xi2a=0;%rot en x phi 180,0
+xi2a=10;%rot en x phi 180,0
 xi3a=95;%rot en y theta 180,0
 
 xi1b=0;%rot en z psi 10 , -90
@@ -116,6 +116,7 @@ Mr1=rottz1*rotty1*rottx1;%gR1
 Mr2=rottz2*rotty2*rottx2;%gR2
 Mr3=rottz3*rotty3*rottx3;
 
+
 pf1=Mr1*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1];
 pf2=Mr2*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1];
 pf3=Mr3*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1];
@@ -125,6 +126,19 @@ Vsa=pf2(:,4);
 Vsb=pf3(:,4);
 Vsn=[Vs(1)+Vsa(1) Vs(2)+Vsa(2) Vs(3)+Vsa(3)]; %coordenada antebrazo
 Vsnn=[Vsn(1)+Vsb(1) Vsn(2)+Vsb(2) Vsn(3)+Vsb(3)]; %coordenada mano
+
+%rotacion del primer segmento por la rotacion en z del segundo segmento
+
+pfz=rottz2*[1 0 0 1;0 1 0 0;0 0 1 0;0 0 0 1]; % rotar el segundo segmento y desplazar en x
+Vsz=pfz(:,4); %Coordenadas en x y z
+pruebarotz=[Vs(1)+Vsz(1) Vs(2)+Vsz(2) Vs(3)+Vsz(3)]; % ubicar el vector del segundo segmento en el espacio relativo a al primer segmento
+
+%rotacion del primer segmento por la rotacion en z y la rotacion en y del segundo segmento
+
+pfy=rottz2*rotty2*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1]; % rotar el segundo segmento y desplazar en x
+Vsy=pfy(:,4); %Coordenadas en x y z
+pruebaroty=[Vs(1)+Vsy(1) Vs(2)+Vsy(2) Vs(3)+Vsy(3)]; % ubicar el vector del segundo segmento en el espacio relativo a al primer segmento
+
 
 
 
@@ -151,70 +165,85 @@ Mr23=Inv_Mr2*Mr3;
 %--------------------------prueba busqueda de angulos------------
 
 f1=0;
-
-for j=1:1:length(theta)
-    
-if(abs(y1(2,j)-(-Mr12(3,1)))<0.0001)
- result(1,cont)=y1(1,j);
- cont=cont+1;
-end 
-
-end
-
 j=1;
-contr=1; 
 auxx=0;
 auxy=0;
 auxz=0;
 
-while f1==0
- 
-    
-y12=result(j);
-
-
-for i=1:1:length(theta)
-    
-if(abs(y1(2,i)-(Mr12(3,2)/cosd(y12)))<0.001)
- result1(1,cont1)=y1(1,i);
- cont1=cont1+1;
- 
+%VALORES POSIBLES DE Y12
+for j=1:1:length(theta)
+   
+if(abs(y1(2,j)-(-Mr12(3,1)))<0.0001)
+ result(1,cont)=round(y1(1,j));
+ cont=cont+1;
+%j
 end 
 
 end
 
+%SACAR VALORES REPETIDOS
 
 
-for h=1:1:length(result1)
+%-------SE ENCUENTRA EL VALOR DE Z12
+%SE RECORRE CADA VALOR POSIBLE DE Y12
+for i=1:1:length(result)
 
- x12=result1(h);
- 
- 
-for k=1:1:length(theta)
+auxy=result(i);    
     
-if(abs(y1(2,k)-(Mr12(2,1)/cosd(y12)))<0.001)
- result2(1,cont2)=y1(1,k);
+%VALORES POSIBLES DE Z12
+for k=1:1:length(theta)
+
+valz=(Mr12(2,1)/cosd(auxy));    
+
+if isnan(valz)
+    valz=0;
+end
+
+if(abs(y1(2,k)-valz)<0.0001)
+ result2(1,cont2)=round(y1(1,k));
  cont2=cont2+1;
  
 end 
 
 end
- 
- 
- if isnan(x12)
-    x12=0;
- end
- 
 
-for t=1:1:length(result2)
 
-z12=result2(t);  
+for g=1:1:length(result2)
+    
+ auxz=result2(g);
+
+%--------Eje coordenado z sistema4-------------
+
+
+rottzl=[cosd(auxz) -sind(auxz) 0 0;
+       sind(auxz) cosd(auxz) 0 0;
+       0 0 1 0;
+       0 0 0 1];
    
-  
-if isnan(z12)
-    z12=0;
+ vpa=Mr1*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1]*rottzl*[1 0 0 1;0 1 0 0;0 0 1 0;0 0 0 1];
+ VRR=vpa(:,4); 
+
+if abs(pruebarotz(1)-VRR(1))<0.001 && abs(pruebarotz(2)-VRR(2))<0.001 && abs(pruebarotz(3)-VRR(3))<0.001
+z12=auxz;
+f1=1;
+break;
 end
-  
+
+end
+
+if f1==1
+break;    
+end   
+
+
+
+end
+%-------------------------------
+
+f1=0;
+auxx=0;
+auxy=0;
+auxz=0;
 %--------Eje coordenado z sistema4-------------
 
 
@@ -223,14 +252,34 @@ rottz4=[cosd(z12) -sind(z12) 0 0;
        0 0 1 0;
        0 0 0 1];
 
+%------SE ENCUENTRA EL VALOR DE Y12
+%SE RECORRE EL VECTOR DE POSIBLES VALORES DE Y12 PROBANDO HASTA ENCONTRAR
+%EL VALOR INDICADO
+for u=1:1:length(result)
+    
+ auxy=result(u);
 
-%--------Eje coordenado x sistema4-------------
+
+%--------Eje coordenado y sistema3-------------
 
 
-rottx4=[1 0 0 0;
-       0 cosd(x12) -sind(x12) 0;
-       0 sind(x12) cosd(x12) 0;
+rottyl=[cosd(auxy) 0 sind(auxy) 0;
+       0 1 0 0;
+       -sind(auxy) 0 cosd(auxy) 0;
        0 0 0 1];
+      
+      
+ vpb=Mr1*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1]*rottz4*rottyl*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1];
+ VRR=vpb(:,4); 
+
+if abs(pruebaroty(1)-VRR(1))<0.001 && abs(pruebaroty(2)-VRR(2))<0.001 && abs(pruebaroty(3)-VRR(3))<0.001
+y12=auxy;
+%f1=1;
+break;
+end
+
+end
+ 
 
 %--------Eje coordenado y sistema4-------------
 
@@ -240,34 +289,47 @@ rotty4=[cosd(y12) 0 sind(y12) 0;
        -sind(y12) 0 cosd(y12) 0;
        0 0 0 1];
 
-%--------Eje coordenado z sistema4-------------
+
+%------SE ENCUENTRA EL VALOR DE X12
+% POSIBLES VALORES DE X12
+for T=1:1:length(theta)
+
+valx=(Mr12(3,2)/cosd(y12));    
+
+if isnan(valx)
+    valx=0;
+end
+
+if(abs(y1(2,T)-valx)<0.0001)
+ result1(1,cont2)=round(y1(1,T));
+ cont1=cont1+1;
+ 
+end 
+
+end
+%SE RECORRE EL VECTOR DE POSIBLES VALORES DE X12 PROBANDO HASTA ENCONTRAR
+%EL VALOR INDICADO
+for B=1:1:length(result1)
+    
+ auxx=result1(B);
 
 
+%--------Eje coordenado x sistema4-------------
 
-vpa=Mr1*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1]*rottz4*rotty4*rottx4*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1];
-VRR=vpa(:,4);
+
+rottx4=[1 0 0 0;
+       0 cosd(auxx) -sind(auxx) 0;
+       0 sind(auxx) cosd(auxx) 0;
+       0 0 0 1]; 
+   
+ vpc=Mr1*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1]*rottz4*rotty4*rottx4*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1];
+ VRR=vpc(:,4); 
 
 if abs(Vsn(1)-VRR(1))<0.001 && abs(Vsn(2)-VRR(2))<0.001 && abs(Vsn(3)-VRR(3))<0.001
-f1=1;
-X12(1,contr)=x12
-Y12(1,contr)=y12
-Z12(1,contr)=z12
-break;
-contr=contr+1;
-end
-end
-
-if abs(Vsn(1)-VRR(1))<0.001 && abs(Vsn(2)-VRR(2))<0.001 && abs(Vsn(3)-VRR(3))<0.001
-f1=1;
+x12=auxx;
+%f1=1;
 break;
 end
-
-end
-j=j+1;
-
-% if j==5
-%     break;
-% end  
 
 end
 
@@ -285,10 +347,10 @@ end
 
 
 
-a=[ cosd(y12)*cosd(z12), cosd(z12)*sind(x12)*sind(y12) - cosd(x12)*sind(z12), sind(x12)*sind(z12) + cosd(x12)*cosd(z12)*sind(y12)];
-b=[ cosd(y12)*sind(z12), cosd(x12)*cosd(z12) + sind(x12)*sind(y12)*sind(z12), cosd(x12)*sind(y12)*sind(z12) - cosd(z12)*sind(x12)];
-c=[       -sind(y12),                        cosd(y12)*sind(x12),                        cosd(x12)*cosd(y12)];
- 
+% a=[ cosd(y12)*cosd(z12), cosd(z12)*sind(x12)*sind(y12) - cosd(x12)*sind(z12), sind(x12)*sind(z12) + cosd(x12)*cosd(z12)*sind(y12)];
+% b=[ cosd(y12)*sind(z12), cosd(x12)*cosd(z12) + sind(x12)*sind(y12)*sind(z12), cosd(x12)*sind(y12)*sind(z12) - cosd(z12)*sind(x12)];
+% c=[       -sind(y12),                        cosd(y12)*sind(x12),                        cosd(x12)*cosd(y12)];
+%  
 % if Vsa(1)>=0
 % x12=+abs(x12);
 % else

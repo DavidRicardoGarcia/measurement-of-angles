@@ -22,14 +22,14 @@ z12=0;
 y12=0;
 x12=0;
 
-xi1=10;%rot en z psi 90, -90
-xi2=10;%rot en x phi 180, 0
-xi3=0;%rot en y theta 180, -90 
+xi1=0;%rot en z psi 90, -90
+xi2=0;%rot en x phi 180, 0
+xi3=90;%rot en y theta 180, -90 
 
 
-xi1a=195;%rot en z psi 180,-10
+xi1a=90;%rot en z psi 180,-10
 xi2a=0;%rot en x phi 180,0
-xi3a=0;%rot en y theta 180,0
+xi3a=190;%rot en y theta 180,0
 
 xi1b=0;%rot en z psi 10 , -90
 xi2b=0;%rot en x phi 10 , -90
@@ -142,17 +142,17 @@ pfy=rottz2*rotty2*[1 0 0 0;0 1 0 0;0 0 1 -1000;0 0 0 1]; % rotar el segundo segm
 Vsy=pfy(:,4); %Coordenadas en x y z
 pruebaroty=[Vs(1)+Vsy(1) Vs(2)+Vsy(2) Vs(3)+Vsy(3)]; % ubicar el vector del segundo segmento en el espacio relativo a al primer segmento
 
-% plot3([0 1],[0 0],[0 0],'m');
+% plot3([0 1000],[0 0],[0 0],'m');
 % hold on
-% plot3([0 0],[0 1],[0 0],'m');
-% plot3([0 0],[0 0],[0 1],'m');
+% plot3([0 0],[0 1000],[0 0],'m');
+% plot3([0 0],[0 0],[0 1000],'m');
 % 
 % plot3([0 Vs(1)],[0 Vs(2)],[0 Vs(3)],'m');
 % 
 % plot3([0 Vsn(1)],[0 Vsn(2)],[0 Vsn(3)],'black');
 % 
 % plot3([Vs(1) pruebaroty(1)],[Vs(2) pruebaroty(2)],[Vs(3) pruebaroty(3)],'r');
-
+% 
 % grid on
 % axis on
 % 
@@ -268,24 +268,15 @@ for i=1:1:length(result)
 
 auxy=result(i);    
  
-cont2=1;
-%result1=1;
 %VALORES POSIBLES DE Z12
-for k=1:1:length(theta)
 
-valz=(Mr12(2,1)/cosd(auxy));    
-
-if isnan(valz)
+valz=round(1000*Mr12(2,1)/cosd(auxy));
+if asind(Mr12(2,1)/cosd(auxy))<1 && asind(Mr12(2,1)/cosd(auxy))>-1
     valz=0;
-end
-
-if(abs(y1(2,k)-valz)<0.0001) %&& round(y1(1,k))<=180 && round(y1(1,k))>=-180
- result2(1,cont2)=round(y1(1,k));
- cont2=cont2+1;
- 
 end 
+[c,d]=find(y1(2,:)==valz);
+result2=round(y1(1,d));
 
-end
 
 v=1;
 
@@ -299,7 +290,7 @@ end
 for g=1:1:length(result2)
     
 auxz=result2(g);
-%auxz=185;
+%auxz=-220;
 %--------Eje coordenado z sistema4-------------
 
 
@@ -308,10 +299,13 @@ rottzl=[cosd(auxz) -sind(auxz) 0 0;
        0 0 1 0;
        0 0 0 1];
    
- vpa=Mr1*[1 0 0 0;0 1 0 0;0 0 1 -1000;0 0 0 1]*rottzl*[1 0 0 1000;0 1 0 0;0 0 1 0;0 0 0 1];
+ vpa=pf1*rottzl*[1 0 0 1000;0 1 0 0;0 0 1 0;0 0 0 1];
  VRR=vpa(:,4); 
+abs(pruebarotz(1)-VRR(1))<50
+abs(pruebarotz(2)-VRR(2))<50 
+abs(pruebarotz(3)-VRR(3))<50
 
-if abs(pruebarotz(1)-VRR(1))<0.001 && abs(pruebarotz(2)-VRR(2))<0.001 && abs(pruebarotz(3)-VRR(3))<0.001
+if abs(pruebarotz(1)-VRR(1))<50 &&  abs(pruebarotz(2)-VRR(2))<50 && abs(pruebarotz(3)-VRR(3))<50
 z12=auxz;
 f1=1;
 break;
@@ -335,6 +329,7 @@ plot3([0 0],[0 0],[0 1],'m');
 plot3([0 Vs(1)],[0 Vs(2)],[0 Vs(3)],'m');
 plot3([0 Vsz(1)],[0 Vsz(2)],[0 Vsz(3)],'b');
 plot3([0 VRR(1)],[0 VRR(2)],[0 VRR(3)],'black');
+plot3([Vs(1) Vsn(1)],[Vs(2) Vsn(2)],[Vs(3) Vsn(3)],'c');
 plot3([Vs(1) pruebarotz(1)],[Vs(2) pruebarotz(2)],[Vs(3) pruebarotz(3)],'r');
 grid on
 axis on
@@ -369,10 +364,14 @@ rottyl=[cosd(auxy) 0 sind(auxy) 0;
        0 0 0 1];
       
       
- vpb=Mr1*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1]*rottz4*rottyl*[1 0 0 0;0 1 0 0;0 0 1 -1;0 0 0 1];
+ vpb=Mr1*[1 0 0 0;0 1 0 0;0 0 1 -1000;0 0 0 1]*rottz4*rottyl*[1 0 0 0;0 1 0 0;0 0 1 -1000;0 0 0 1];
  VRR=vpb(:,4); 
 
-if abs(pruebaroty(1)-VRR(1))<0.001 && abs(pruebaroty(2)-VRR(2))<0.001 && abs(pruebaroty(3)-VRR(3))<0.001
+ abs(pruebaroty(1)-VRR(1))<50
+ abs(pruebaroty(2)-VRR(2))<50
+ abs(pruebaroty(3)-VRR(3))<50
+ 
+if abs(pruebaroty(1)-VRR(1))<50 && abs(pruebaroty(2)-VRR(2))<50 && abs(pruebaroty(3)-VRR(3))<50
 y12=auxy;
 %f1=1;
 break;
@@ -382,12 +381,13 @@ end
  
 
 figure
-plot3([0 1],[0 0],[0 0],'m');
+plot3([0 1000],[0 0],[0 0],'m');
 hold on
-plot3([0 0],[0 1],[0 0],'m');
-plot3([0 0],[0 0],[0 1],'m');
+plot3([0 0],[0 1000],[0 0],'m');
+plot3([0 0],[0 0],[0 1000],'m');
 plot3([0 Vs(1)],[0 Vs(2)],[0 Vs(3)],'m');
 plot3([0 VRR(1)],[0 VRR(2)],[0 VRR(3)],'black');
+plot3([Vs(1) Vsn(1)],[Vs(2) Vsn(2)],[Vs(3) Vsn(3)],'c');
 plot3([Vs(1) pruebaroty(1)],[Vs(2) pruebaroty(2)],[Vs(3) pruebaroty(3)],'r');
 grid on
 axis on
@@ -577,16 +577,16 @@ end
 
 pp=acosd(dot(Vs,Vsa)/(norm(Vs)*norm(Vsa)));
 
-figure
-plot3([0 Vs(1)],[0 Vs(2)],[0 Vs(3)],'r');
-hold on
-plot3([0 1],[0 0],[0 0],'m');
-plot3([0 0],[0 1],[0 0],'m');
-plot3([0 0],[0 0],[0 1],'m');
-%plot3([0 Vsa(1)],[0 Vsa(2)],[0 Vsa(3)],'B');
-%plot3([0 Vsb(1)],[0 Vsb(2)],[0 Vsb(3)],'g');
-plot3([0 VRR(1)],[0 VRR(2)],[0 VRR(3)],'black');
-plot3([Vs(1) Vsn(1)],[Vs(2) Vsn(2)],[Vs(3) Vsn(3)],'c');
+% figure
+% plot3([0 Vs(1)],[0 Vs(2)],[0 Vs(3)],'r');
+% hold on
+% plot3([0 1],[0 0],[0 0],'m');
+% plot3([0 0],[0 1],[0 0],'m');
+% plot3([0 0],[0 0],[0 1],'m');
+% %plot3([0 Vsa(1)],[0 Vsa(2)],[0 Vsa(3)],'B');
+% %plot3([0 Vsb(1)],[0 Vsb(2)],[0 Vsb(3)],'g');
+% plot3([0 VRR(1)],[0 VRR(2)],[0 VRR(3)],'black');
+% plot3([Vs(1) Vsn(1)],[Vs(2) Vsn(2)],[Vs(3) Vsn(3)],'c');
 %plot3([Vsn(1) Vsnn(1)],[Vsn(2) Vsnn(2)],[Vsn(3) Vsnn(3)],'y');
 
 % for n=1:1:length(X12)
